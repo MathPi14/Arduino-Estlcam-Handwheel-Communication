@@ -60,14 +60,14 @@ After soldering everything together, you need to adjust the software and downloa
 #define Y_LED_GPIO 3
 #define Z_LED_GPIO 4
 
-#define PROGRAM_START_GPIO 9           // GPIO the program start button is connected
-#define SPINDLE_START_GPIO 10           // "-" spindle start button
-#define OK_GPIO 11                   // "-" ok button 
+#define PROGRAM_START_GPIO 9           
+#define SPINDLE_START_GPIO 10           
+#define OK_GPIO 11                   
 #define X_SELECT_GPIO 5
 #define Y_SELECT_GPIO 6
 #define Z_SELECT_GPIO 7
 #define STOP_GPIO 8
-#define ONBOARD_LED_GPIO 13             // "-" onboard led
+#define ONBOARD_LED_GPIO 13             
 ```
 
 Then upload the software to your arduino. 
