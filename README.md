@@ -5,8 +5,8 @@
 * [Used Components](#used-components)
 
 ## General Description
-This is an implementation of the Estlcam handwheel i2c Communication Protocol (https://www.estlcam.de/DIN_Detail.php) for Arduino Boards. 
-It supports all the functionality of the originial handwheel:
+This is my implementation of the Estlcam handwheel i2c communication protocol (https://www.estlcam.de/DIN_Detail.php) for Arduino Boards. 
+It supports all the features the originial handwheel provides:
 * 3/4 - axis joystick for rough positioning 
 * encoder (handwheel) which allows very fine positioning
 * spindle, program start and enter (probing) buttons 
@@ -16,14 +16,14 @@ the following 'hidden' features are implemented as well:
 * 3 led which indicate which of the axis is currently active to move on the handwheel
 * 3 buttons to change the currently active axis 
 
-Tested with Estlcam V11.244
+Tested with Estlcam V11.244. The hidden features may not be supported by other Estlcam Versions.
 	
 ## Prerequisites
 To get started, you need the following:
-* an original Estlcam Board with a mini-DIN Port
-* mini-Din cable (6 Pin, male connector). 2-3 m length recommended, depending on the size of your cnc. Super long cables (>5 m) might cause EMC issues
+* an original Estlcam board with a mini-DIN port
+* mini-DIN cable (6 Pin, male connector). 2-3 m length recommended, depending on the size of your cnc. Super long cables (>5 m) might cause EMC issues
 * an arduino (original or compatible) board with 5 V operating voltage, 7 ADC Pins including SDA and SCL for the i2c communication functionality and 9 digital Pins like the Arduino Nano 
-* analog Joystick (3 or 4 axis, 10kohm)
+* analog joystick (3 or 4 axis, 10kohm)
 * handwheel encoder
 * 2x 10kohm potentiometers
 * 6x push buttons. No toggle switches!
@@ -37,7 +37,7 @@ You also need basic soldering equipment, cables, shrink tubing, hot glue etc.
 ## Installation
 ### Housing/ Electronics
 * You need to design the housing of your handwheel first. I will update this repo with my components/ printable .stl files/ installation pictures soon after i solved some teething problems
-* start with installing all the components (apart from the arduino board for now). Carefully solder cables to the buttons', potentiometers' etc. VCC (+) and GND (-) Pins. It's recommended to either daisy chain them from the DIN - Cable to all the components or to use wago connection clamps
+* start with installing all the components (apart from the arduino board for now). Carefully solder cables to the buttons', potentiometers' etc. as well als VCC (+) and GND (-) Pins. It's recommended to either daisy chain them from the DIN-cable to all the components or to use seperate cables on every component and wago connection clamps
 * follow up with the DIN-Cable. First connect the dedicated wires to the encoder +- and the VCC(+), GND(-), SDA/ SCL to the arduino (check https://www.estlcam.de/DIN_Detail.php & the pinout of your Arduino Board. SDA/ SCL Pins are specific ADC Pins)
 * solder cables to the components' data pins and start connecting them to the arduino:
 * begin with the LED output pins. Its recommended to use digital Pins 1-3 to keep things organized as we need to configure them as 'output' later in software
@@ -73,9 +73,9 @@ After soldering everything together, you need to adjust the software and downloa
 Then upload the software to your arduino. 
 
 ### Software (Estlcam)
-After the electrical work is done and the Code is running on your Arduino, you can connect the mini-Din cable to the Estlcam Board and reprogram the latter. You know that everything worked out, if there's a 'Handrad 0001 ...' line appearing in the log inside Estlcam. If it didn't, there is most likely something wrong with the SDA/ SCL Pins.
+After the electrical work is done and the Code is running on your Arduino, you can connect the mini-DIN cable to the Estlcam Board and reprogram the latter. You know that everything worked out, if there's a 'Handrad 0001 ...' line appearing in the log inside Estlcam. If it didn't, there is most likely something wrong with the SDA/ SCL Pins.
 
-If it works, you can go to the controls tab inside Estlcam and test if everything works as intended. If the Joystick ADC are inverted, you can simply change it in Estlcam directly. If the Buttons, LED or feed/ speed potentiometers are inverted or not assigned correctly, go back to the previous step 
+If it works, you can go to the controls tab inside Estlcam and test the components. If the Joystick ADC are inverted, you can simply change it in Estlcam directly. If the Buttons, LED or feed/ speed potentiometers are inverted or not assigned correctly, go back to the previous step and change the defines
 
 ## Used Components
 * joystick (https://de.aliexpress.com/item/4001270851701.html?spm=a2g0o.order_list.order_list_main.28.3ab85c5fBNVLpg&gatewayAdapt=glo2deu)
