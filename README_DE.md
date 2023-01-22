@@ -1,21 +1,24 @@
+
 # Table of contents
-* [General Description](#general-description)
-* [Prerequisites](#prerequisites)
+* [Allgemeines](#allgemeines)
+* [Anforderungen](#anforderungen)
 * [Installation](#installation)
-* [Used Components](#used-components)
+* [Einkaufsliste](#einkaufsliste)
 
-## General Description
-This is my implementation of the Estlcam handwheel i2c communication protocol (https://www.estlcam.de/DIN_Detail.php) for Arduino Boards. 
-It supports all the features the originial handwheel provides:
-* 3/4 - axis joystick for rough positioning 
-* encoder (handwheel) which allows very fine positioning
-* spindle, program start and enter (probing) buttons 
-* feed and speed override potentiometers
+## Allgemeines
+Dieser Code implementiert das Estlcam Handrad-Kommunikationsprotokoll (https://www.estlcam.de/DIN_Detail.php) für Arduino Boards.
+Damit kann das Handrad für original Estlcam Klemmenadapter nachgebaut werden.
 
-the following 'hidden' features are implemented as well:
-* 3 led which indicate which of the axis is currently active to move on the handwheel
-* 3 buttons to change the currently active axis 
-* emergency stop (triggers program pause)
+Es werden alle Features des originalen Handrads unterstützt:
+* 3 achs joystick für das grobe Positionieren
+* Encoder (Handrad) für das feine Antasten
+* Spindel, Programm start und Enter (Antasten) Druckknöpfe
+* Vorschub und Drehzahl Potis
+
+Folgende zusätzlichen Funktionen werden ebenfalls unterstützt:
+* 3 LED zur Anzeige, welche Achse gerade mit dem Handrad verfahren wird
+* 3 Buttons zur Auswahl der aktuellen Achse
+* Not-Halt (triggert den Programm "Pause" Knopf in Estlcam)
 
 ![top](https://user-images.githubusercontent.com/69339442/213932798-1af69cf4-892e-43d9-bc12-5184e7064199.png)
 ![inside](https://user-images.githubusercontent.com/69339442/213932805-338ffd80-9654-4688-8ebe-09921d74ee7b.png)
@@ -23,72 +26,74 @@ the following 'hidden' features are implemented as well:
 ![pinout](https://user-images.githubusercontent.com/69339442/213933733-bbf50029-dfe7-4c3b-87aa-6fddc10b4ca6.png)
 
 
-Tested with Estlcam V11.244. The hidden features may not be supported by other Estlcam Versions.
+Getestet mit Estlcam V11.244. Die zusätzlichen Funktionen funktionieren evtl. nicht mit anderen Versionen.
 	
-## Prerequisites
-To get started, you need the following:
-* an original Estlcam board with a mini-DIN port
-* mini-DIN cable (6 Pin, male connector). 2-3 m length recommended, depending on the size of your cnc. Super long cables (>5 m) might cause EMC issues
-* an arduino (original or compatible) board with 5 V operating voltage, 7 ADC Pins including SDA and SCL for the i2c communication functionality and 9 digital Pins like the Arduino Nano 
-* analog joystick (3 or 4 axis, 10kohm)
-* handwheel encoder
-* 2x 10kohm potentiometers
-* 6x push buttons. No toggle switches!
-* 3x 5 V LED (or 12 V with appropiate resistor)
-* plastic/ esd safe housing
-* a small cable gland (M16/ PG9 if you use my 3d printed housing)
-* 4 M4 brass inserts and short screws (if you use my 3d printed housing)
+## Anforderungen
+Zunächst muss die Hardware beschafft werden:
+* 1x Estlcam Klemmenadapter mit einer mini-DIN Buchse
+* 1x mini-DIN kabel (6 pin Stecker bzw. männlicher Anschluss). Ich empfehle mindestens 2-3 m Länge. Ab 5 m werden evtl. EMV Probleme auftreten.
+* 1x Arduino Board z.B. Nano (original oder after market) mit 5 V Nennspannung, 7 ADC Pins (SDA und SCL für i2c inklusive), 9 digitale IO
+* 1x Analoger joystick (3 oder 4 axis, 10 kohm)
+* 1x Handrad mit Encoder
+* 2x 10kohm Potis
+* 6x Druckknöpfe (keine Rastfunktion!)
+* 3x 5 V LED (or 12 V mit Widerstand)
+* 1x Gehäuse z.B. 3D gedruckt (siehe Dateien)
+* 1x Kabelverschraubung (M16/ PG9 bei meinem Gehäuse)
+* 4x M4 Gewindeeinsatz und kurze M4 Schrauben (bei meinem Gehäuse)
 
-You also need basic soldering equipment, cables, shrink tubing, hot glue etc.
-	
+Außerdem wird essentielles Werkzeug zum Löten (Lötstation/ Kolben, Zinn, Kabel, Schrumpfschläuche, Heißklebepistole etc.) benötigt	
+
 ## Installation
-### Housing/ Electronics
-* You need to design the housing of your handwheel first. I will update this repo with my components/ printable .stl files/ installation pictures soon after i solved some teething problems
-* start with installing all the components (apart from the arduino board for now). Carefully solder cables to the buttons', potentiometers' etc. as well als VCC (+) and GND (-) Pins. It's recommended to either daisy chain them from the DIN-cable to all the components or to use seperate cables on every component and wago connection clamps
-* follow up with the DIN-Cable. First connect the dedicated wires to the encoder +- and the VCC(+), GND(-), SDA/ SCL to the arduino (check https://www.estlcam.de/DIN_Detail.php & the pinout of your Arduino Board. SDA/ SCL Pins are specific ADC Pins)
-* solder cables to the components' data pins and start connecting them to the arduino:
-* begin with the LED output pins. Its recommended to use digital Pins 1-3 to keep things organized as we need to configure them as 'output' later in software
-* the 6 buttons can be connected to GPIO 4-10
-* finally connect the potentiometer and joystick output to any ADC pin left
+### Gehäuse
+* Am besten startet man mit der Installation der LED, des Handrads, der Knöpfe, Potis und der Kabelverschraubung. Dort kann man gleich (ruhig etwas längere) Kabel anlöten. Da das Handrad Schraubklemmen hat, empfehle ich, diese als Sammelpunkt für GND und Versorgungsspannung zu nutzen (jew. 1 Kabel zu Arduino/ Komponenten). Dann bleibt das DIN Kabel abnehmbar.
+* Zur Sicherheit sollten alle Knöpfe einmal mit dem Multimeter auf Funktion überprüft werden
+* Danach Kabel an die Kontakte der Joystick- X und Y Potis löten (im ausgebauten Zustand)
+* Den Not-Halt Dreipunktschalter sollte man zuletzt einbauen
+* Wenn alle Komponenten eingebaut und Kabel angelötet worden sind, kann man diese zur Ordnung mit Heißkleber am Gehäuse fixieren.
+* Anschließend alle Kabel, welche zum Arduino gehen, einzeln ablängen, abisolieren, verdrillen und ensprechend dem angefügten Bild an den Arduino löten
+* Dabei an die SDA und SCL Pins (ADC 4 & 5) zunächst nur zwei kurze Kabel löten. Diese werden später mit z.B. Wagoklemmen mit dem DIN Kabel verbunden (was dann abnehmbar bleibt, siehe Punkt 1)
+* Zum Schutz des Innenraums den Arduino zuletzt auf die gedruckte Einsatzplatte clipsen und die einzelnen Kabel in den Kämmen sortieren
 
 ### Software (Arduino)
-After soldering everything together, you need to adjust the software and download it to your arduino. After you copy and pasted the code to your Arduino IDE, go through the defines and change the pin configuration according to your hardware installation
+Nachdem alles verbaut, verlötet und getestet ist, kann die Software über die Arduino IDE aufgespielt werden. Das Programm läuft, wenn die TX LED des Arduino blinkt.
+Falls die Kabel nicht so, wie in dem angefügten Pinout verlötet wurden oder ein anderes Board verwendet wird, müssen folgende Defines ensprechend geändert werden:
 
 ```
-#define SPEED_GPIO A0                   
+#define JOYSTICK_X_GPIO A0            
+#define JOYSTICK_Y_GPIO A1
+#define JOYSTICK_Z_GPIO A2
+#define SPEED_GPIO A6                  
 #define SPEED_GPIO_INVERTED 1          
-#define FEED_GPIO A1                   
+#define FEED_GPIO A7                   
 #define FEED_GPIO_INVERTED 1            
-#define JOYSTICK_X_GPIO A2              
-#define JOYSTICK_Y_GPIO A3
-#define JOYSTICK_Z_GPIO A6
+
 
 #define X_LED_GPIO 2
 #define Y_LED_GPIO 3
 #define Z_LED_GPIO 4
 
-#define PROGRAM_START_GPIO 9           
-#define SPINDLE_START_GPIO 10           
-#define OK_GPIO 11                   
 #define X_SELECT_GPIO 5
 #define Y_SELECT_GPIO 6
-#define Z_SELECT_GPIO 7
-#define STOP_GPIO 8
-#define ONBOARD_LED_GPIO 13             
+#define Z_SELECT_GPIO 7          
+#define SPINDLE_START_GPIO 8    
+#define PROGRAM_START_GPIO 9
+#define OK_GPIO 10                   
+#define STOP_GPIO 11         
+
+#define ONBOARD_LED_GPIO 13
 ```
 
-Then upload the software to your arduino. 
-
 ### Software (Estlcam)
-After the electrical work is done and the Code is running on your Arduino, you can connect the mini-DIN cable to the Estlcam Board and reprogram the latter. You know that everything worked out, if there's a 'Handrad 0001 ...' line appearing in the log inside Estlcam. If it didn't, there is most likely something wrong with the SDA/ SCL Pins.
+Nun kann man das Handrad schon an den Klemmenadapter anschließen. Nach dem erneuten Programmieren der Estlcam Steuerung muss die Meldung "Zusatzmodul Handrad 0001 erkannt" erscheinen. Falls dem nicht so ist, stimmt vermutlich etwas mit dem SDA/ SCL Pins nicht.
 
-If it works, you can go to the controls tab inside Estlcam and test the components. If the Joystick ADC are inverted, you can simply change it in Estlcam directly. If the Buttons, LED or feed/ speed potentiometers are inverted or not assigned correctly, go back to the previous step and change the defines
+Vor dem Testen sollte man ein letztes mal verifizieren, dass alle Buttons, LED usw. richtig angeschlossen sind. Dazu in den "Bedienelemente" Tab wechseln und bei laufender Steuerung systematisch alle Knöpfe, Potis etc. drücken/ bewegen und auf die entsprechende Anzeige achten. Falls die Potis invertiert sind oder die Belegung der Knöpfe nicht passt, kann man diese einfach über die Defines aus dem vorherigen Unterkapitel ändern.
 
-## Used Components
-* joystick (https://de.aliexpress.com/item/4001270851701.html?spm=a2g0o.order_list.order_list_main.28.3ab85c5fBNVLpg&gatewayAdapt=glo2deu)
-* encoder (5V 4Pin, 60 mm) (https://de.aliexpress.com/item/32949618549.html?spm=a2g0o.order_list.order_list_main.23.3ab85c5fBNVLpg&gatewayAdapt=glo2deu)
-* buttons (https://de.aliexpress.com/item/1005003302861259.html?spm=a2g0o.order_list.order_list_main.15.3ab85c5fBNVLpg&gatewayAdapt=glo2deu)
+## Einkaufsliste
+* Joystick (https://de.aliexpress.com/item/4001270851701.html?spm=a2g0o.order_list.order_list_main.28.3ab85c5fBNVLpg&gatewayAdapt=glo2deu)
+* Handrad (5V 4Pin, 60 mm) (https://de.aliexpress.com/item/32949618549.html?spm=a2g0o.order_list.order_list_main.23.3ab85c5fBNVLpg&gatewayAdapt=glo2deu)
+* Druckknöpfe (https://de.aliexpress.com/item/1005003302861259.html?spm=a2g0o.order_list.order_list_main.15.3ab85c5fBNVLpg&gatewayAdapt=glo2deu)
 * 5V led (https://de.aliexpress.com/item/1005003751324053.html?spm=a2g0o.order_list.order_list_main.16.3ab85c5fBNVLpg&gatewayAdapt=glo2deu) 
-* 10 kOhm potentiometers (https://de.aliexpress.com/item/4000971762879.html?spm=a2g0o.order_list.order_list_main.33.3ab85c5fBNVLpg&gatewayAdapt=glo2deu)
-* emergency stop (16 mm diameter) (https://de.aliexpress.com/item/33014058927.html?spm=a2g0o.order_list.order_list_main.17.77675c5fkKyHby&gatewayAdapt=glo2deu)
+* 10 kOhm Potis (https://de.aliexpress.com/item/4000971762879.html?spm=a2g0o.order_list.order_list_main.33.3ab85c5fBNVLpg&gatewayAdapt=glo2deu)
+* Not Dreipunktschalter (16 mm) (https://de.aliexpress.com/item/33014058927.html?spm=a2g0o.order_list.order_list_main.17.77675c5fkKyHby&gatewayAdapt=glo2deu)
 * Arduino Nano (https://de.aliexpress.com/item/1005002867053794.html?spm=a2g0o.productlist.main.1.133a77caLz0lR6&algo_pvid=95d24bee-27b9-4d5b-8cd0-02c4f537d310&aem_p4p_detail=202301110712423199476066881400004107065&algo_exp_id=95d24bee-27b9-4d5b-8cd0-02c4f537d310-0&pdp_ext_f=%7B%22sku_id%22%3A%2212000022573065020%22%7D&pdp_npi=2%40dis%21EUR%215.46%214.31%21%21%21%21%21%402100b18f16734499623697280d070b%2112000022573065020%21sea&curPageLogUid=7E5HYHNNMxJW&ad_pvid=202301110712423199476066881400004107065_1&ad_pvid=202301110712423199476066881400004107065_1)
