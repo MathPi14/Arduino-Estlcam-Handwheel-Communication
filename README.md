@@ -39,7 +39,8 @@ To get started, you need the following:
 * 2x 10kohm potentiometers
 * 6x push buttons. No toggle switches!
 * 3x 5 V LED (or 12 V with appropiate resistor)
-* housing
+* emergency stop button
+* housing (see attached .stl files)
 * a small cable gland (M16/ PG9 if you use my 3d printed housing)
 * 4 M4 brass inserts and short screws (if you use my 3d printed housing)
 
