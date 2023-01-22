@@ -7,25 +7,26 @@
 
 #define DEBUG 0
 
-#define SPEED_GPIO A0                   // ADC Pin for the Speed override Poti
+#define JOYSTICK_X_GPIO A0              // ADC Pins for the xyz Poti inside the joystick
+#define JOYSTICK_Y_GPIO A1
+#define JOYSTICK_Z_GPIO A2
+#define SPEED_GPIO A6                   // ADC Pin for the Speed override Poti
 #define SPEED_GPIO_INVERTED 1          // 1 if the potentiometer values shall be inverted 
-#define FEED_GPIO A1                    // ADC Pin for the Feed override Poti
+#define FEED_GPIO A7                    // ADC Pin for the Feed override Poti
 #define FEED_GPIO_INVERTED 1            // see above
-#define JOYSTICK_X_GPIO A2              // ADC Pins for the xyz Poti inside the joystick
-#define JOYSTICK_Y_GPIO A3
-#define JOYSTICK_Z_GPIO A6
 
 #define X_LED_GPIO 2
 #define Y_LED_GPIO 3
 #define Z_LED_GPIO 4
 
-#define PROGRAM_START_GPIO 9           // GPIO the program start button is connected
-#define SPINDLE_START_GPIO 10           // "-" spindle start button
-#define OK_GPIO 11                   // "-" ok button 
 #define X_SELECT_GPIO 5
 #define Y_SELECT_GPIO 6
 #define Z_SELECT_GPIO 7
-#define STOP_GPIO 8
+#define SPINDLE_START_GPIO 8           // "-" spindle start button
+#define PROGRAM_START_GPIO 9           // GPIO the program start button is connected
+#define OK_GPIO 10                  // "-" ok button 
+#define STOP_GPIO 11
+
 #define ONBOARD_LED_GPIO 13             // "-" onboard led
 
 // dont change these
@@ -85,35 +86,31 @@ void setup() {
 // loop is called constantly
 // handle mode state machine specified by Estlcam
 void loop() {
+  buffer_data();
   switch (rcv_frame[0]) {
     case 0:
       delay(100);
       break;
 
     case 1:
-      buffer_data();
       update_data();                                // update mode specific data
       break;
 
     case 2:
-      buffer_data();
       update_data();                                // update mode specific data
       update_status_led();
       break;
 
     case 3:
       identify();
-      buffer_data();
       break;
 
     case 4:
       challenge();
-      buffer_data();
       break;
 
     case 5:
       serialnumber();
-      buffer_data();
       break;
   }
 }
