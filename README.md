@@ -8,7 +8,9 @@
 
 ## General Description
 This is my implementation of the Estlcam handwheel i2c communication protocol (https://www.estlcam.de/DIN_Detail.php) for Arduino Boards. 
-It supports all the features the originial handwheel provides:
+Its made for users of the original Estlcam Hardware.
+
+The Code supports all the features the originial handwheel provides:
 * 3/4 - axis joystick for rough positioning 
 * encoder (handwheel) which allows very fine positioning
 * spindle, program start and enter (probing) buttons 
@@ -37,7 +39,7 @@ To get started, you need the following:
 * 2x 10kohm potentiometers
 * 6x push buttons. No toggle switches!
 * 3x 5 V LED (or 12 V with appropiate resistor)
-* plastic/ esd safe housing
+* housing
 * a small cable gland (M16/ PG9 if you use my 3d printed housing)
 * 4 M4 brass inserts and short screws (if you use my 3d printed housing)
 
@@ -45,41 +47,41 @@ You also need basic soldering equipment, cables, shrink tubing, hot glue etc.
 	
 ## Installation
 ### Housing/ Electronics
-* You need to design the housing of your handwheel first. I will update this repo with my components/ printable .stl files/ installation pictures soon after i solved some teething problems
-* start with installing all the components (apart from the arduino board for now). Carefully solder cables to the buttons', potentiometers' etc. as well als VCC (+) and GND (-) Pins. It's recommended to either daisy chain them from the DIN-cable to all the components or to use seperate cables on every component and wago connection clamps
-* follow up with the DIN-Cable. First connect the dedicated wires to the encoder +- and the VCC(+), GND(-), SDA/ SCL to the arduino (check https://www.estlcam.de/DIN_Detail.php & the pinout of your Arduino Board. SDA/ SCL Pins are specific ADC Pins)
-* solder cables to the components' data pins and start connecting them to the arduino:
-* begin with the LED output pins. Its recommended to use digital Pins 1-3 to keep things organized as we need to configure them as 'output' later in software
-* the 6 buttons can be connected to GPIO 4-10
-* finally connect the potentiometer and joystick output to any ADC pin left
+* start with installing the led, push-buttons, the encoder and potentiometers (not the joystick, arduino, cable gland and emergency stop for now). Carefully solder (not too short) cables to the components. It's recommended to use the screw terminals of the handwheel encoder as bus for the components and the DIN Cable as well. This way, the DIN cable remains detatchable
+* secure the cables with hot glue
+* solder the cables to the arduino according the attached photo of the pinout. Use two short cables for the SDA and SCL so that we can connect them to the DIN cable with Wago clamps later (the cable remains detachable, see #1)
+* attach the arduino to the insert and sort the cables with the cable comb
+* insert the DIN cable, connect enc + and - as well as VCC and GND to the encoder (handwheel) and SDA/ SCL to the arduino
+
 
 ### Software (Arduino)
-After soldering everything together, you need to adjust the software and download it to your arduino. After you copy and pasted the code to your Arduino IDE, go through the defines and change the pin configuration according to your hardware installation
+Flash the Arduino via the IDE. The onboard TX LED blinks when the program is running. 
+If you use any other arduino board or if your pin assignment differs from mine, you may need to change the following defines 
 
 ```
-#define SPEED_GPIO A0                   
+#define JOYSTICK_X_GPIO A0            
+#define JOYSTICK_Y_GPIO A1
+#define JOYSTICK_Z_GPIO A2
+#define SPEED_GPIO A6                  
 #define SPEED_GPIO_INVERTED 1          
-#define FEED_GPIO A1                   
+#define FEED_GPIO A7                   
 #define FEED_GPIO_INVERTED 1            
-#define JOYSTICK_X_GPIO A2              
-#define JOYSTICK_Y_GPIO A3
-#define JOYSTICK_Z_GPIO A6
+
 
 #define X_LED_GPIO 2
 #define Y_LED_GPIO 3
 #define Z_LED_GPIO 4
 
-#define PROGRAM_START_GPIO 9           
-#define SPINDLE_START_GPIO 10           
-#define OK_GPIO 11                   
 #define X_SELECT_GPIO 5
 #define Y_SELECT_GPIO 6
-#define Z_SELECT_GPIO 7
-#define STOP_GPIO 8
-#define ONBOARD_LED_GPIO 13             
-```
+#define Z_SELECT_GPIO 7          
+#define SPINDLE_START_GPIO 8    
+#define PROGRAM_START_GPIO 9
+#define OK_GPIO 10                   
+#define STOP_GPIO 11         
 
-Then upload the software to your arduino. 
+#define ONBOARD_LED_GPIO 13           
+```
 
 ### Software (Estlcam)
 After the electrical work is done and the Code is running on your Arduino, you can connect the mini-DIN cable to the Estlcam Board and reprogram the latter. You know that everything worked out, if there's a 'Handrad 0001 ...' line appearing in the log inside Estlcam. If it didn't, there is most likely something wrong with the SDA/ SCL Pins.
