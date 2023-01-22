@@ -15,6 +15,13 @@ It supports all the features the originial handwheel provides:
 the following 'hidden' features are implemented as well:
 * 3 led which indicate which of the axis is currently active to move on the handwheel
 * 3 buttons to change the currently active axis 
+* emergency stop (triggers program pause)
+
+![top](https://user-images.githubusercontent.com/69339442/213932798-1af69cf4-892e-43d9-bc12-5184e7064199.png)
+![inside](https://user-images.githubusercontent.com/69339442/213932805-338ffd80-9654-4688-8ebe-09921d74ee7b.png)
+![inside_2](https://user-images.githubusercontent.com/69339442/213932818-617348a7-9fe8-44db-abf7-a462b88048d6.png)
+![pinout](https://user-images.githubusercontent.com/69339442/213933733-bbf50029-dfe7-4c3b-87aa-6fddc10b4ca6.png)
+
 
 Tested with Estlcam V11.244. The hidden features may not be supported by other Estlcam Versions.
 	
@@ -30,7 +37,7 @@ To get started, you need the following:
 * 3x 5 V LED (or 12 V with appropiate resistor)
 * plastic/ esd safe housing
 * a small cable gland (M16/ PG9 if you use my 3d printed housing)
-* 2 M4 brass inserts and short screws (if you use my 3d printed housing)
+* 4 M4 brass inserts and short screws (if you use my 3d printed housing)
 
 You also need basic soldering equipment, cables, shrink tubing, hot glue etc.
 	
@@ -83,4 +90,5 @@ If it works, you can go to the controls tab inside Estlcam and test the componen
 * buttons (https://de.aliexpress.com/item/1005003302861259.html?spm=a2g0o.order_list.order_list_main.15.3ab85c5fBNVLpg&gatewayAdapt=glo2deu)
 * 5V led (https://de.aliexpress.com/item/1005003751324053.html?spm=a2g0o.order_list.order_list_main.16.3ab85c5fBNVLpg&gatewayAdapt=glo2deu) 
 * 10 kOhm potentiometers (https://de.aliexpress.com/item/4000971762879.html?spm=a2g0o.order_list.order_list_main.33.3ab85c5fBNVLpg&gatewayAdapt=glo2deu)
+* emergency stop (16 mm diameter) (https://de.aliexpress.com/item/33014058927.html?spm=a2g0o.order_list.order_list_main.17.77675c5fkKyHby&gatewayAdapt=glo2deu)
 * Arduino Nano (https://de.aliexpress.com/item/1005002867053794.html?spm=a2g0o.productlist.main.1.133a77caLz0lR6&algo_pvid=95d24bee-27b9-4d5b-8cd0-02c4f537d310&aem_p4p_detail=202301110712423199476066881400004107065&algo_exp_id=95d24bee-27b9-4d5b-8cd0-02c4f537d310-0&pdp_ext_f=%7B%22sku_id%22%3A%2212000022573065020%22%7D&pdp_npi=2%40dis%21EUR%215.46%214.31%21%21%21%21%21%402100b18f16734499623697280d070b%2112000022573065020%21sea&curPageLogUid=7E5HYHNNMxJW&ad_pvid=202301110712423199476066881400004107065_1&ad_pvid=202301110712423199476066881400004107065_1)
