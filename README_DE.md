@@ -46,18 +46,19 @@ Außerdem wird essentielles Werkzeug zum Löten (Lötstation/ Kolben, Zinn, Kabe
 
 ## Installation
 ### Gehäuse
-* Am besten startet man mit der Installation der LED, des Handrads, der Knöpfe, Potis und der Kabelverschraubung. Dort kann man gleich (ruhig etwas längere) Kabel anlöten. Da das Handrad Schraubklemmen hat, empfehle ich, diese als Sammelpunkt für GND und Versorgungsspannung zu nutzen (jew. 1 Kabel zu Arduino/ Komponenten). Dann bleibt das DIN Kabel abnehmbar.
+Falls meine 3D Dateien genutzt werden, empfehle ich die folgende Vorgehensweise:
+* Druck mit einer 0.4 mm Nozzle, 0.2-0.25 mm Schichthöhe, 2-3 Schleifen, Infill egal
+* Am besten startet man mit der Installation der LED, des Handrads, der Knöpfe, Potis und der Kabelverschraubung. Dort kann man gleich (ruhig etwas längere) Kabel anlöten. Die Schraubklemmen am Handrad (Encoder) kann man als Sammelpunkt für GND und Versorgungsspannung nutzen (jew. 1 Kabel zu Arduino/ Komponenten). Dann bleibt das DIN Kabel abnehmbar
 * Zur Sicherheit sollten alle Knöpfe einmal mit dem Multimeter auf Funktion überprüft werden
-* Danach Kabel an die Kontakte der Joystick- X und Y Potis löten (im ausgebauten Zustand)
+* Danach Kabel an die Kontakte der Joystick- X und Y Potis löten (im ausgebauten Zustand), anschließend einbauen
 * Den Not-Halt Dreipunktschalter sollte man zuletzt einbauen
-* Wenn alle Komponenten eingebaut und Kabel angelötet worden sind, kann man diese zur Ordnung mit Heißkleber am Gehäuse fixieren.
+* Bevor der Arudino eingebaut wird, am besten alle Kabel zur Ordnung mit Heißkleber am Gehäuse fixieren
 * Anschließend alle Kabel, welche zum Arduino gehen, einzeln ablängen, abisolieren, verdrillen und ensprechend dem angefügten Bild an den Arduino löten
 * Dabei an die SDA und SCL Pins (ADC 4 & 5) zunächst nur zwei kurze Kabel löten. Diese werden später mit z.B. Wagoklemmen mit dem DIN Kabel verbunden (was dann abnehmbar bleibt, siehe Punkt 1)
 * Zum Schutz des Innenraums den Arduino zuletzt auf die gedruckte Einsatzplatte clipsen und die einzelnen Kabel in den Kämmen sortieren
 
 ### Software (Arduino)
-Nachdem alles verbaut, verlötet und getestet ist, kann die Software über die Arduino IDE aufgespielt werden. Das Programm läuft, wenn die TX LED des Arduino blinkt.
-Falls die Kabel nicht so, wie in dem angefügten Pinout verlötet wurden oder ein anderes Board verwendet wird, müssen folgende Defines ensprechend geändert werden:
+Nachdem alles verbaut, verlötet und getestet ist, kann die Software über die Arduino IDE aufgespielt werden. Falls die Kabel nicht so, wie in dem angefügten Pinout verlötet wurden oder ein anderes Board verwendet wird, müssen folgende Defines ensprechend geändert werden:
 
 ```
 #define JOYSTICK_X_GPIO A0            
