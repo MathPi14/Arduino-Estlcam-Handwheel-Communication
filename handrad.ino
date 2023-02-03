@@ -5,31 +5,30 @@
 
 #include <Wire.h>
 
-#define DEBUG 0
-
-#define JOYSTICK_X_GPIO A0              // ADC Pins for the xyz Poti inside the joystick
+#define JOYSTICK_X_GPIO A0              // ADC Pins the Joystick, speed, feed ovveride potis are connected to
 #define JOYSTICK_Y_GPIO A1
 #define JOYSTICK_Z_GPIO A2
-#define SPEED_GPIO A6                   // ADC Pin for the Speed override Poti
-#define SPEED_GPIO_INVERTED 1          // 1 if the potentiometer values shall be inverted 
-#define FEED_GPIO A7                    // ADC Pin for the Feed override Poti
+#define SPEED_GPIO A6                  
+#define SPEED_GPIO_INVERTED 1          // 1 if the Poti values shall be inverted 
+#define FEED_GPIO A7                   
 #define FEED_GPIO_INVERTED 1            // see above
 
 #define X_LED_GPIO 2
 #define Y_LED_GPIO 3
 #define Z_LED_GPIO 4
 
-#define X_SELECT_GPIO 5
+#define X_SELECT_GPIO 5                 // Digital IO the corresp. buttons are connected to
 #define Y_SELECT_GPIO 6
 #define Z_SELECT_GPIO 7
-#define SPINDLE_START_GPIO 8           // "-" spindle start button
-#define PROGRAM_START_GPIO 9           // GPIO the program start button is connected
-#define OK_GPIO 10                  // "-" ok button 
+#define PROGRAM_START_GPIO 8           
+#define SPINDLE_START_GPIO 9           
+#define OK_GPIO 10                   
 #define STOP_GPIO 11
 
 #define ONBOARD_LED_GPIO 13             // "-" onboard led
 
-// dont change these
+#define DEBUG 0
+
 #define I2C_ADRESS 0b0000010            // I2C Slave Adress
 #define I2C_CLOCK_FREQUENCY 10000       // I2C Clock Frequency
 #define IDENT_STRING "Handrad 0001"     // Response to Mode3: Identify
@@ -58,7 +57,6 @@ void setup() {
   Wire.setClock(I2C_CLOCK_FREQUENCY);   // set clock frequency to I2C_CLOCK_FREQUENCY (specified by Estlcam)
   Wire.onRequest(RequestEventHandler);  // register RequestEventHandler on Request Events from the Master (Estlcam)
   Wire.onReceive(ReceiveEventHandler);  // register ReceiveEventHandler on Receive Events from the Master (Estlcam)
-  
   pinMode(PROGRAM_START_GPIO, INPUT_PULLUP);                    // initialize Button and Led GPIOs
   pinMode(SPINDLE_START_GPIO, INPUT_PULLUP);
   pinMode(OK_GPIO, INPUT_PULLUP);
@@ -66,20 +64,13 @@ void setup() {
   pinMode(X_SELECT_GPIO, INPUT_PULLUP);
   pinMode(Y_SELECT_GPIO, INPUT_PULLUP);
   pinMode(Z_SELECT_GPIO, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(PROGRAM_START_GPIO), button_interrupt_handler, RISING);
-  attachInterrupt(digitalPinToInterrupt(SPINDLE_START_GPIO), button_interrupt_handler, RISING);
-  attachInterrupt(digitalPinToInterrupt(OK_GPIO), button_interrupt_handler, RISING);
-  attachInterrupt(digitalPinToInterrupt(STOP_GPIO), button_interrupt_handler, RISING);
-  attachInterrupt(digitalPinToInterrupt(X_SELECT_GPIO), button_interrupt_handler, RISING);
-  attachInterrupt(digitalPinToInterrupt(Y_SELECT_GPIO), button_interrupt_handler, RISING);
-  attachInterrupt(digitalPinToInterrupt(Z_SELECT_GPIO), button_interrupt_handler, RISING);
-  
   pinMode(X_LED_GPIO, OUTPUT);
   pinMode(Y_LED_GPIO, OUTPUT);
   pinMode(Z_LED_GPIO, OUTPUT);
   pinMode(ONBOARD_LED_GPIO, OUTPUT);
 #ifdef DEBUG
   Serial.begin(9600);
+  Serial.println("Running");
 #endif
 }
 
@@ -87,7 +78,8 @@ void setup() {
 // handle mode state machine specified by Estlcam
 void loop() {
   buffer_data();
-  switch (rcv_frame[0]) {
+  switch (rcv_frame[0]) 
+  {
     case 0:
       delay(100);
       break;
@@ -115,6 +107,7 @@ void loop() {
   }
 }
 
+//
 void update_status_led() {
   switch (rcv_frame[1]) {
     case 0:
@@ -142,11 +135,9 @@ void update_status_led() {
       break;
   }
 }
-/*
-called on a i2c Request from the Master (Estlcam) 
-interrupts the loop() thus needs to be as fast as possible
-increment Frame number and checksum according to Specification from Estlcam
-*/
+// called on a i2c Request from the Master (Estlcam)
+// interrupts the loop() thus needs to be as fast as possible
+// increment Frame number and checksum according to Specification from Estlcam
 void RequestEventHandler() {
   if (rcv_frame[0] != 0) {
     send_frame[12] = rcv_frame[0];                // set 12 bit to match selected mode
@@ -175,50 +166,27 @@ void RequestEventHandler() {
 #endif
 }
 
-/* 
-called on a i2c Request from the Master (Estlcam)
-interrupts the loop() thus needs to be as fast as possible and needs a volatile buffer to write data to
-save byte 1 of the received frame (specifies the  mode used in the loop() state machine) 
-*/
+// called on a i2c Request from the Master (Estlcam)
+// interrupts the loop() thus needs to be as fast as possible and needs a volatile buffer to write data to
+// save byte 1 of the received frame (specifies the  mode used in the loop() state machine)
 void ReceiveEventHandler(int rcv_frame_size) {
   if (rcv_frame_size == READ_FRAME_SIZE) {        // check if we receive 9 bytes (according to specification from Estlcam)
     for (int i = 0; i < READ_FRAME_SIZE; i++) {   // save received data byte-by-byte to the volatile buffer variable
       rcv_frame[i] = Wire.read();
     }
   }
-}
-/*
-fetch current button state if there was any rising edge on the assigned button GPIO
-set the global button state variables accordingly
- */
-void button_interrupt_handler(){
-  program_start_btn_pressed = digitalRead(PROGRAM_START_GPIO);
-  spindle_start_btn_pressed = digitalRead(SPINDLE_START_GPIO);
-  ok_btn_pressed = digitalRead(OK_GPIO);
-  stop_btn_pressed = digitalRead(STOP_GPIO);
-  if (digitalRead(X_SELECT_GPIO) == 0) {
-    axis_selected = 1;
-  }
-  else if (digitalRead(Y_SELECT_GPIO) == 0) {
-    axis_selected = 2;
-  }
-  else if (digitalRead(Z_SELECT_GPIO) == 0) {
-    axis_selected = 3;
-  }
-  else {
-    axis_selected = 0;
-  }
+#ifdef DEBUG
+  Serial.println("Receive Request");
+#endif
 }
 
-/*
-copies the current button/ potentiometer states to the outgoing databuffer
- */
 void update_data() {
   send_frame[0] = 0xFF;                     //byte 1 = 255 according to spec
   if (axis_selected > 0) {
     send_frame[0] &= ~(1 << axis_selected - 1) | (0 << axis_selected - 1);
   }
-  send_frame[1] = 0xFF;                     //set bits 2,4,5,6,7 of byte 2 to 1 beforehand
+
+  send_frame[1] = 0xFF;                     //set bits 2, 4,5,6,7 of byte 2 to 1 beforehand
   if (!program_start_btn_pressed) {
     send_frame[1] &= ~(1 << 0) | (0 << 0); //flip bit 0 if PROGRAM_START_GPIO is high
   }
@@ -244,25 +212,20 @@ void update_data() {
   send_frame[11] = highByte(z_data);
 }
 
-/* 
-called once after a Request Event fired and if we are in mode 1
-first check if a button was pushed previously. This would've caused an interrupt and set the corresp. state variable
-if the button was pushed previously, read GPIO again and set the current state. This debounces the buttons sufficiently
-finally update the data to write out to the master
- */
+// called once after a Request Event fired and we are in mode 1
+// update the data to write out to the master
 void buffer_data() {
-  program_start_btn_pressed ? program_start_btn_pressed = digitalRead(PROGRAM_START_GPIO) : program_start_btn_pressed = 0;
-  spindle_start_btn_pressed ? spindle_start_btn_pressed = digitalRead(SPINDLE_START_GPIO) : spindle_start_btn_pressed = 0;
-  ok_btn_pressed ? ok_btn_pressed = digitalRead(OK_GPIO) : ok_btn_pressed = 0;
-  stop_btn_pressed ? stop_btn_pressed = digitalRead(STOP_GPIO) : stop_btn_pressed = 0;
-
-  if ((axis_selected == 1) & (digitalRead(X_SELECT_GPIO) == 0)) {
+  program_start_btn_pressed = digitalRead(PROGRAM_START_GPIO);
+  spindle_start_btn_pressed = digitalRead(SPINDLE_START_GPIO);
+  ok_btn_pressed = digitalRead(OK_GPIO);
+  stop_btn_pressed = digitalRead(STOP_GPIO);
+  if (digitalRead(X_SELECT_GPIO) == 0) {
     axis_selected = 1;
   }
-  else if ((axis_selected == 2) & (digitalRead(Y_SELECT_GPIO) == 0)) {
+  else if (digitalRead(Y_SELECT_GPIO) == 0) {
     axis_selected = 2;
   }
-  else if ((axis_selected == 3) & (digitalRead(Z_SELECT_GPIO) == 0)) {
+  else if (digitalRead(Z_SELECT_GPIO) == 0) {
     axis_selected = 3;
   }
   else {
@@ -299,7 +262,7 @@ void serialnumber() {
   }
 }
 
-// calculate the checksum according to Estlcam spec
+// calculate the checksum according to specification from Estlcam
 uint8_t crc_calc() {
   crc = 0;                                  //clear checksum
   for (int i = 0; i < 14; i++) {            //for bytes 1-14: XOR next byte with current checksum, then increment the latter
