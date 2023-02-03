@@ -15,7 +15,7 @@ Es werden alle Features des originalen Handrads unterstützt:
 * Spindel, Programm start und Enter (Antasten) Druckknöpfe
 * Vorschub und Drehzahl Potis
 
-Folgende zusätzlichen Funktionen werden ebenfalls unterstützt:
+Folgende Funktionen werden zusätzlich unterstützt:
 * 3 LED zur Anzeige, welche Achse gerade mit dem Handrad verfahren wird
 * 3 Buttons zur Auswahl der aktuellen Achse
 * Not-Halt (triggert den Programm "Pause" Knopf in Estlcam)
@@ -55,6 +55,7 @@ Falls meine 3D Dateien genutzt werden, empfehle ich die folgende Vorgehensweise:
 * Bevor der Arudino eingebaut wird, am besten alle Kabel zur Ordnung mit Heißkleber am Gehäuse fixieren
 * Anschließend alle Kabel, welche zum Arduino gehen, einzeln ablängen, abisolieren, verdrillen und ensprechend dem angefügten Bild an den Arduino löten
 * Dabei an die SDA und SCL Pins (ADC 4 & 5) zunächst nur zwei kurze Kabel löten. Diese werden später mit z.B. Wagoklemmen mit dem DIN Kabel verbunden (was dann abnehmbar bleibt, siehe Punkt 1)
+* Das DIN Kabel über die Kabelverschraubung einführen, abisolieren und die Adern durchprüfen & -nummerieren. GND, VCC, Encoder +, Encoder - an den Schraubklemmen am Encoder anschließen. SDA und SCL mit den kurzen Kabeln, welche man an den Arduino gelötet hat, z.B. über Wago Klemmen verbinden.
 * Zum Schutz des Innenraums den Arduino zuletzt auf die gedruckte Einsatzplatte clipsen und die einzelnen Kabel in den Kämmen sortieren
 
 ### Software (Arduino)
