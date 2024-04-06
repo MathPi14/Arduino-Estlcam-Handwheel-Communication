@@ -24,7 +24,8 @@ the following 'hidden' features are implemented as well:
 ![top](https://user-images.githubusercontent.com/69339442/213932798-1af69cf4-892e-43d9-bc12-5184e7064199.png)
 ![inside](https://user-images.githubusercontent.com/69339442/213932805-338ffd80-9654-4688-8ebe-09921d74ee7b.png)
 ![inside_2](https://user-images.githubusercontent.com/69339442/213932818-617348a7-9fe8-44db-abf7-a462b88048d6.png)
-<img width="1916" alt="Unbenannt" src="https://github.com/MathPi14/Arduino-Estlcam-Handwheel-Communication/assets/69339442/aabe8c0c-e0d9-4920-9c46-3ac9642a59eb">
+<img width="1916" alt="Unbenannt" src="https://github.com/MathPi14/Arduino-Estlcam-Handwheel-Communication/assets/69339442/442e6999-9383-4424-a91c-3369e8d33fa7">
+
 
 
 Tested with Estlcam V11.244. The hidden features may not be supported by other Estlcam Versions.
