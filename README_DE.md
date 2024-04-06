@@ -23,7 +23,8 @@ Folgende Funktionen werden zusätzlich unterstützt:
 ![top](https://user-images.githubusercontent.com/69339442/213932798-1af69cf4-892e-43d9-bc12-5184e7064199.png)
 ![inside](https://user-images.githubusercontent.com/69339442/213932805-338ffd80-9654-4688-8ebe-09921d74ee7b.png)
 ![inside_2](https://user-images.githubusercontent.com/69339442/213932818-617348a7-9fe8-44db-abf7-a462b88048d6.png)
-![pinout](https://user-images.githubusercontent.com/69339442/213933733-bbf50029-dfe7-4c3b-87aa-6fddc10b4ca6.png)
+<img width="1916" alt="Unbenannt" src="https://github.com/MathPi14/Arduino-Estlcam-Handwheel-Communication/assets/69339442/364a4f17-ab1b-4a86-8ee9-a54d02f05b86">
+
 
 
 Getestet mit Estlcam V11.244. Die zusätzlichen Funktionen funktionieren evtl. nicht mit anderen Versionen.
